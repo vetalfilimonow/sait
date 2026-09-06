@@ -3,22 +3,808 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Сайт</title>
+<meta name="description" content="Метод, який перетворює ваш контент на прибуток. Перетвори свій blog за 5 днів на бізнес-систему.">
+<title>THE CASH — Метод від Content Papa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Hanken+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-  :root { color-scheme: light dark; }
-  body { margin:0; min-height:100vh; display:grid; place-items:center;
-         font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-         background:#fafaf9; color:#1c1917; }
-  @media (prefers-color-scheme:dark){ body{background:#1c1917;color:#fafaf9;} }
-  .box { text-align:center; padding:2rem; max-width:32rem; }
-  h1 { font-size:1.5rem; margin:0 0 .5rem; }
-  p { opacity:.7; margin:0; }
+/* ═══ DESIGN TOKENS ══════════════════════════════════════ */
+:root{
+  --lime:#B9F600; --lime-glow:rgba(185,246,0,.14); --lime-b:rgba(185,246,0,.25);
+  --magenta:#FF2D6B; --magenta-glow:rgba(255,45,107,.18); --magenta-b:rgba(255,45,107,.35);
+  --bg:#0D0E0F; --bg2:#1E2020; --bg3:#121414;
+  --t:#E2E2E2; --tm:#C3CAAD; --border:rgba(67,73,51,.30);
+  --fd:'Anton',sans-serif;
+  --fb:'Hanken Grotesk','Helvetica Neue',sans-serif;
+  --fm:'JetBrains Mono','Courier New',monospace;
+  --fs:'PT Serif',Georgia,serif}
+
+/* ═══ RESET ══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg);overflow-x:hidden}
+body{background:var(--bg);color:var(--t);font-family:var(--fb);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto;display:block}
+
+/* ═══ FADE-IN ════════════════════════════════════════════ */
+.fi{opacity:0;transform:translateY(24px);filter:blur(4px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1),filter .8s cubic-bezier(.16,1,.3,1)}
+.fi.v{opacity:1;transform:translateY(0);filter:blur(0)}
+.delay-1{transition-delay:.1s}
+.delay-2{transition-delay:.2s}
+
+/* ═══ NAV ════════════════════════════════════════════════ */
+.nav{position:fixed;inset:0 0 auto;z-index:300;height:58px;background:rgba(13,14,15,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-i{max-width:1240px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:100%}
+.nav-logo{font-family:var(--fd);font-size:26px;letter-spacing:-.4px;color:#fff;text-shadow:0 0 10px rgba(185,246,0,.3)}
+.nav-links{display:flex;gap:32px}
+.nav-link{font-family:var(--fm);font-size:13px;letter-spacing:1.4px;text-transform:uppercase;color:#C3CAAC;padding-bottom:3px;position:relative;transition:color .2s ease}
+.nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--lime);transition:width .2s ease}
+.nav-link:hover::after,.nav-link.on::after{width:100%}
+.nav-link:hover,.nav-link.on{color:var(--lime)}
+/* nav-btn: Hanken Grotesk instead of Mono for better readability */
+.nav-btn{font-family:var(--fb);font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#fff;background:var(--magenta);border:none;cursor:pointer;padding:8px 24px;border-radius:9999px;box-shadow:0 0 14px var(--magenta-glow);transition:all .2s cubic-bezier(.16,1,.3,1)}
+.nav-btn:hover{background:#fff;color:var(--magenta);box-shadow:0 0 28px var(--magenta-b);transform:translateY(-1px)}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px;margin-right:-10px}
+.nav-ham span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+.nav-ham.on span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.nav-ham.on span:nth-child(2){opacity:0}
+.nav-ham.on span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mob-menu{display:none;position:fixed;inset:58px 0 0 0;overflow-y:auto;background:rgba(13,14,15,.97);border-bottom:1px solid var(--border);padding:20px 32px;flex-direction:column;gap:2px;z-index:299}
+.mob-menu.on{display:flex}
+.mob-menu a{font-family:var(--fm);font-size:13px;letter-spacing:1.4px;color:#C3CAAC;padding:12px 0;border-bottom:1px solid var(--border)}
+
+/* ═══ HERO ═══════════════════════════════════════════════ */
+@keyframes heroEntranceText{0%{opacity:0;transform:translateY(30px);filter:blur(8px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+@keyframes titlePulse{0%,100%{filter:drop-shadow(0 0 28px rgba(185,246,0,.5))}50%{filter:drop-shadow(0 0 28px var(--magenta-b))}}
+
+.hero{position:relative;background:var(--bg);display:flex;flex-direction:column;padding-top:58px;overflow:hidden}
+.hero-scene{position:relative;width:100%;max-width:100%;height:clamp(280px,45vw,520px);flex-shrink:0;overflow:hidden;z-index:1}
+@keyframes heroVideoIn{0%{opacity:0;transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 5%;pointer-events:none;z-index:0;animation:heroVideoIn 1.4s cubic-bezier(.16,1,.3,1) forwards}
+
+/* ═══ GLITCH ═════════════════════════════════════════════ */
+.glitch-noise{position:absolute;top:0;left:0;width:100%;height:100%;background:url("https://grainy-gradients.vercel.app/noise.svg");background-size:200px;opacity:0;pointer-events:none;z-index:3;mix-blend-mode:overlay}
+.glitch-active .glitch-noise{animation:noise-flicker .2s infinite}
+.glitch-active .glitch-text{animation:heroEntranceText 1.1s cubic-bezier(.16,1,.3,1) forwards,titlePulse 6s ease-in-out 1.3s infinite,text-glitch-snap 3s infinite steps(1)}
+@keyframes noise-flicker{0%{opacity:.2;transform:translate(0,0)}20%{opacity:.4;transform:translate(-5%,5%)}40%{opacity:.3;transform:translate(5%,-2%)}60%{opacity:.5;transform:translate(-2%,-5%)}80%{opacity:.4;transform:translate(2%,2%)}100%{opacity:.2;transform:translate(0,0)}}
+@keyframes text-glitch-snap{0%,93%,100%{transform:translate(0);filter:blur(0);letter-spacing:normal;font-weight:400}94%{transform:translate(4px,-2px);filter:blur(1px) contrast(200%);letter-spacing:.1em;font-weight:700}95%{transform:translate(-4px,2px);clip-path:inset(10% 0 40% 0)}96%{transform:translate(2px,4px);clip-path:inset(50% 0 10% 0);font-weight:200}97%{transform:translate(0);clip-path:none;filter:invert(100%)}98%{transform:skewX(10deg)}}
+
+.hero-the{position:absolute;bottom:8%;left:clamp(16px,8%,120px);z-index:1;font-family:var(--fd);font-size:clamp(64px,16vw,210px);line-height:.85;letter-spacing:-.03em;color:var(--lime);opacity:0;overflow:visible}
+.hero-cash{position:absolute;bottom:8%;right:clamp(16px,8%,120px);z-index:1;font-family:var(--fd);font-size:clamp(64px,16vw,210px);line-height:.85;letter-spacing:-.03em;color:var(--lime);opacity:0;overflow:visible}
+.hero-the.glitch-active{animation:heroEntranceText 1.1s cubic-bezier(.16,1,.3,1) forwards,titlePulse 6s ease-in-out 1.3s infinite}
+.hero-cash.glitch-active{animation:heroEntranceText 1.1s cubic-bezier(.16,1,.3,1) .12s forwards,titlePulse 6s ease-in-out 1.3s infinite}
+.hero-the .glitch-text,.hero-cash .glitch-text{display:block;line-height:inherit;opacity:0}
+
+.hero-foot{padding:32px 32px 48px;text-align:center;max-width:1200px;margin:0 auto;width:100%;z-index:5;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.hero-tag{font-family:var(--fb);font-weight:700;font-size:clamp(15px,2.83vw,34px);letter-spacing:.5px;color:var(--t);line-height:1.4;margin-bottom:32px}
+.hero-accent{color:var(--lime);position:relative;display:inline-block;padding-bottom:4px}
+.hero-underline-svg{position:absolute;left:0;bottom:-8px;width:100%;height:12px;pointer-events:none}
+@keyframes drawLine{0%{stroke-dashoffset:420}100%{stroke-dashoffset:0}}
+.hero-underline-svg path{stroke-dasharray:420;stroke-dashoffset:420;animation:drawLine 1.2s cubic-bezier(.4,0,.2,1) 1s forwards}
+
+/* ═══ CTA BUTTON — Hanken Grotesk, not Mono ════════════ */
+.cta-main{display:inline-block;font-family:var(--fb);font-size:14px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#fff;background:var(--magenta);padding:16px 48px;border:1px solid var(--magenta);box-shadow:0 0 24px var(--magenta-glow);transition:all .25s cubic-bezier(.16,1,.3,1)}
+.cta-main:hover{background:transparent;color:var(--magenta);box-shadow:0 0 44px var(--magenta-b);transform:translateY(-2px)}
+
+/* ═══ LAYOUT ═════════════════════════════════════════════ */
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+/* sec-tag stays Mono — it's a metadata label, correct usage */
+.sec-tag{font-family:var(--fm);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tm);margin-bottom:10px}
+/* sec-h1 → Anton instead of PT Serif for visual consistency with display headings */
+.sec-h1{font-family:var(--fd);text-transform:uppercase;color:var(--t)}
+.sec-h1-lg{font-size:clamp(28px,6vw,72px);letter-spacing:-3px;line-height:1;margin-bottom:48px}
+.sec-h1-sm{font-size:clamp(24px,4vw,48px);letter-spacing:-2px;line-height:1.05;margin-bottom:40px}
+
+/* ═══ FOR WHOM ════════════════════════════════════════════ */
+.fw{padding:128px 0 80px;position:relative;overflow:hidden;scroll-margin-top:58px}
+.fw-pre{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.fw-slash{font-family:var(--fm);font-size:22px;color:var(--lime);opacity:.5;line-height:1}
+.fw-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;position:relative;z-index:1}
+.fw-box{padding:40px;position:relative;overflow:hidden;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.02);box-sizing:border-box}
+.fw-box-1{grid-column:1/span 4}
+.fw-box-2w{grid-column:5/span 8;padding-top:0}
+.fw-box-2{background:var(--bg2);padding:40px;position:relative;overflow:hidden;height:100%;border:1px solid rgba(255,255,255,.02)}
+.fw-box-3{grid-column:1/span 7}
+.fw-box-45{grid-column:8/span 5;display:flex;flex-direction:column;gap:24px}
+.fw-box-4{padding:32px 32px 32px 36px;border-left:4px solid var(--magenta-b);background:rgba(255,255,255,.015);flex:1;position:relative;overflow:hidden}
+.fw-box-5{padding:32px;background:var(--lime);flex:1;position:relative;overflow:hidden}
+/* fw-h3 → Hanken Grotesk Bold instead of PT Serif */
+.fw-h3{font-family:var(--fb);font-weight:700;font-size:clamp(18px,2.2vw,28px);color:var(--lime);text-transform:uppercase;margin-bottom:14px;line-height:1.2;position:relative;z-index:1}
+.fw-box-5 .fw-h3{color:var(--bg)}
+.fw-box-4 .fw-h3{color:#fff;font-size:clamp(16px,1.8vw,22px)}
+.fw-p{font-size:clamp(15px,1.4vw,16.5px);line-height:1.7;color:var(--tm);position:relative;z-index:1}
+.fw-box-5 .fw-p{color:var(--bg);font-weight:700}
+.fw-box-4 .fw-p{font-size:clamp(14.5px,1.3vw,16px)}
+.fw-result{margin-top:14px;padding-top:12px;border-top:1px solid rgba(185,246,0,.15);font-family:var(--fm);font-size:9.5px;letter-spacing:1.4px;color:var(--lime);text-transform:uppercase;line-height:1.6;position:relative;z-index:1}
+.fw-status{background:rgba(185,246,0,.08);border-left:2px solid var(--lime);padding:12px 16px;margin-top:16px;font-family:var(--fm);font-size:10px;letter-spacing:1.4px;color:var(--t);text-transform:uppercase;line-height:1.5}
+.fw-dots{display:flex;gap:6px;margin-top:12px}
+.fw-dot{width:6px;height:6px;border-radius:50%}
+.fw-dot-1{background:var(--lime)}.fw-dot-2{background:var(--lime);opacity:.5}.fw-dot-3{background:var(--lime);opacity:.2}
+.fw-cta-wrap{text-align:center;padding:56px 0 0}
+
+/* ═══ PROCESS STUDIO ═════════════════════════════════════ */
+.proc-sec{position:relative;overflow:hidden;border-top:1px solid var(--border)}
+.proc-item{position:relative;border-bottom:1px solid var(--border);background:var(--bg);transition:background .35s ease}
+.proc-item:hover{background:rgba(185,246,0,.016)}
+.proc-item:last-child{border-bottom:none}
+.proc-body{max-width:1200px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:180px 1fr;gap:0 56px;align-items:start;position:relative;z-index:1;width:100%}
+.proc-day{display:flex;flex-direction:column;align-items:flex-start;padding-top:6px}
+.proc-step{
+  font-family:var(--fd);font-size:clamp(72px,9vw,108px);
+  color:transparent;-webkit-text-stroke:1px rgba(185,246,0,.22);
+  line-height:.85;user-select:none;
+  position:relative;display:inline-block}
+.proc-step::before{
+  content:'';
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:200%;height:200%;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(185,246,0,.22) 0%,transparent 65%);
+  pointer-events:none;filter:blur(22px);z-index:-1}
+.proc-content{padding-top:6px}
+.proc-title{font-family:var(--fd);font-size:clamp(26px,3.8vw,52px);color:var(--t);text-transform:uppercase;line-height:.92;margin-bottom:16px}
+.proc-text{font-family:var(--fb);font-size:15px;line-height:1.75;color:var(--tm);max-width:600px;margin-bottom:0}
+.proc-bonus{display:block;margin-top:18px;padding-top:14px;border-top:1px solid rgba(185,246,0,.12);font-family:var(--fm);font-size:10px;letter-spacing:1.4px;color:var(--lime);text-transform:uppercase;opacity:.85;max-width:600px}
+
+/* ═══ TRANSFORMATION ═════════════════════════════════════ */
+.transform-sec{padding:100px 0;border-top:1px solid var(--border)}
+.t-grid{margin-top:48px;border-top:1px solid var(--border)}
+.t-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.t-col{background:var(--bg);padding:32px 40px;display:flex;flex-direction:column;justify-content:center}
+.t-col.after{background:var(--bg2)}
+.t-lbl{font-family:var(--fm);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tm);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.t-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.t-dot.off{background:rgba(255,255,255,.2)}
+.t-dot.on{background:var(--lime);box-shadow:0 0 10px var(--lime)}
+.t-item{font-family:var(--fb);font-size:clamp(15px,1.4vw,16px);line-height:1.7;color:var(--tm)}
+.t-col.after .t-item{color:var(--t)}
+
+/* ═══ AUTHOR ═════════════════════════════════════════════ */
+.author-sec{display:grid;grid-template-columns:1fr 1fr;background:var(--bg3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;scroll-margin-top:58px}
+.author-photo{position:relative;overflow:hidden;min-height:660px}
+.author-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
+.author-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.85));padding:80px 32px 26px}
+.author-name{font-family:var(--fd);font-size:clamp(26px,3.5vw,50px);color:#fff;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.author-role{font-family:var(--fm);font-size:12px;letter-spacing:1.4px;color:var(--lime);text-transform:uppercase;margin-top:6px}
+.author-content{padding:80px 80px 72px;display:flex;flex-direction:column;justify-content:center}
+.author-sec-tag{font-family:var(--fm);font-size:11px;letter-spacing:1.4px;color:var(--lime);text-transform:uppercase;margin-bottom:24px}
+/* author-h2 keeps PT Serif — editorial "human" voice is appropriate here */
+.author-h2{font-family:var(--fs);font-size:clamp(26px,3.8vw,52px);color:var(--t);text-transform:uppercase;line-height:1.1;margin-bottom:28px;letter-spacing:-.3px}
+/* author-p keeps PT Serif — body reading in author section */
+.author-p{font-family:var(--fs);font-size:16px;line-height:1.75;color:var(--tm);margin-bottom:16px}
+.author-stats{display:flex;gap:14px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap}
+.astat{border:1px solid var(--lime-b);padding:16px 22px;position:relative}
+.astat::before{content:'';position:absolute;top:-1px;left:-1px;width:8px;height:8px;border-top:2px solid var(--t);border-left:2px solid var(--t)}
+.astat::after{content:'';position:absolute;top:-1px;right:-1px;width:8px;height:8px;border-top:2px solid var(--t);border-right:2px solid var(--t)}
+.astat-lbl{font-family:var(--fm);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--t);opacity:.5;margin-bottom:5px}
+.astat-val{font-family:var(--fd);font-size:30px;color:var(--lime);line-height:1}
+
+/* ═══ ELITE ASSETS ═══════════════════════════════════════ */
+.el-hdr{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:56px 0;text-align:center;background:rgba(255,255,255,.005);scroll-margin-top:58px}
+.el-hdr h2{font-family:var(--fd);font-size:clamp(48px,10vw,120px);letter-spacing:-2.4px;text-transform:uppercase;color:var(--t);line-height:1}
+.bonus-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1px;background:var(--border)}
+.bc{background:rgba(26,28,28,.7);backdrop-filter:blur(8px);overflow:hidden;position:relative}
+.bc-oracle{grid-column:1/span 12;display:grid;grid-template-columns:1fr 1fr}
+.bc-toolkit{grid-column:1/span 6;display:flex;flex-direction:column}
+.bc-divid{grid-column:7/span 6;display:flex;flex-direction:column}
+.bc-img-wrap{position:relative;overflow:hidden}
+.bc-oracle .bc-img-wrap{height:100%}
+.bc-toolkit .bc-img-wrap,.bc-divid .bc-img-wrap{height:240px;flex-shrink:0}
+.bc-img{position:absolute;inset:0;width:100%;height:120%;object-fit:cover;object-position:center top;filter:saturate(.15);opacity:.65;transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.bc:hover .bc-img{transform:scale(1.04)}
+.bc-grad{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:1}
+.bc-body{padding:40px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}
+.bc-toolkit .bc-body,.bc-divid .bc-body{flex:1;justify-content:flex-start}
+.bc-h2{font-family:var(--fd);text-transform:uppercase;color:var(--t);margin-bottom:12px;line-height:.95}
+.bc-oracle .bc-h2{font-size:clamp(28px,4.5vw,56px)}
+.bc-toolkit .bc-h2,.bc-divid .bc-h2{font-size:clamp(22px,3.2vw,42px)}
+.bc-p{font-family:var(--fb);font-size:15px;line-height:1.65;color:var(--tm);margin-bottom:14px}
+.bc-list{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+/* bc-list li → Hanken Grotesk (body font), not Mono — small body text reads better in sans */
+.bc-list li{font-family:var(--fb);font-size:14px;color:var(--tm);display:flex;align-items:flex-start;gap:8px;line-height:1.55}
+.bc-list li::before{content:'▸';color:var(--lime);flex-shrink:0;margin-top:1px}
+/* all bonus CTAs unified to single message */
+.bc-cta{border-top:1px solid var(--border);padding-top:14px;font-family:var(--fm);font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--magenta);display:flex;align-items:center;gap:8px;cursor:pointer;transition:gap .2s ease}
+.bc-cta:hover{gap:16px}
+
+/* ═══ BENEFITS ═══════════════════════════════════════════ */
+.benefits-sec{padding:100px 0;border-top:1px solid var(--border)}
+.benefits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:48px}
+.bcard{background:var(--bg);padding:40px 32px;transition:background .3s cubic-bezier(.16,1,.3,1)}
+.bcard:hover{background:var(--bg2)}
+.bcard-title{font-family:var(--fd);font-size:22px;letter-spacing:.02em;text-transform:uppercase;margin-bottom:10px;line-height:1.1;color:var(--lime)}
+.bcard-text{font-family:var(--fb);font-size:clamp(14px,1.3vw,15.5px);line-height:1.7;color:var(--tm)}
+
+/* ═══ PRICING ════════════════════════════════════════════ */
+.price-sec{padding:100px 0;border-top:1px solid var(--border);background:var(--bg3)}
+.price-card{max-width:680px;margin:48px auto 0;border:1px solid var(--magenta-b);border-top:2px solid var(--magenta);background:var(--bg2);padding:52px;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.price-tag{font-family:var(--fm);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tm);margin-bottom:8px}
+.price-num-row{display:flex;align-items:baseline;gap:8px;margin:20px 0 6px}
+.price-amount{font-family:var(--fd);font-size:88px;line-height:1;color:var(--lime)}
+.price-cur{font-family:var(--fd);font-size:28px;color:var(--tm)}
+.price-note{font-family:var(--fm);font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--tm);margin-bottom:26px}
+.price-desc{font-family:var(--fb);font-size:14px;line-height:1.75;color:var(--tm);margin-bottom:28px}
+.price-includes{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:36px}
+.price-includes li{font-family:var(--fb);font-size:14px;color:var(--tm);display:flex;align-items:flex-start;gap:12px;line-height:1.6}
+.price-includes li::before{content:'✓';color:var(--lime);font-family:var(--fm);font-size:12px;margin-top:2px;flex-shrink:0}
+
+/* ═══ FAQ ════════════════════════════════════════════════ */
+.faq-sec{padding:100px 0;border-top:1px solid var(--border);background:var(--bg3)}
+.faq-list{max-width:820px;margin:48px auto 0}
+.faq-item{border-bottom:1px solid var(--border)}
+/* faq-q keeps PT Serif italic — humanises Q&A voice */
+.faq-q{padding:24px 0;font-family:var(--fs);font-size:clamp(16px,2vw,22px);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;user-select:none;transition:color .2s ease;font-style:italic}
+.faq-q:hover{color:var(--lime)}
+.faq-toggle{width:26px;height:26px;border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:16px;color:var(--lime);flex-shrink:0;transition:all .2s ease}
+.faq-item.open .faq-toggle{background:var(--lime);color:#000;border-color:var(--lime)}
+/* faq-answer keeps PT Serif — body reading, comfortable for longer answers */
+.faq-answer{display:none;padding:0 0 24px;font-family:var(--fs);font-size:15px;line-height:1.8;color:var(--tm);max-width:740px}
+.faq-item.open .faq-answer{display:block}
+
+/* ═══ FINAL CTA ══════════════════════════════════════════ */
+.final-cta{padding:120px 32px;text-align:center;background:var(--bg);border-top:2px solid var(--magenta);position:relative;overflow:hidden}
+.final-cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,var(--magenta-glow),transparent 70%);pointer-events:none}
+.final-cta h2{font-family:var(--fd);font-size:clamp(36px,8vw,96px);color:#fff;text-transform:uppercase;letter-spacing:-4px;line-height:1;margin-bottom:44px;position:relative}
+.final-btn{display:inline-flex;align-items:center;gap:14px;background:var(--magenta);color:#fff;border:1px solid var(--magenta);cursor:pointer;font-family:var(--fd);font-size:clamp(18px,2.5vw,30px);text-transform:uppercase;padding:22px 52px;transition:all .25s cubic-bezier(.16,1,.3,1)}
+.final-btn:hover{background:transparent;color:var(--magenta);transform:translateY(-2px);gap:20px}
+
+/* ═══ FOOTER ═════════════════════════════════════════════ */
+.footer{padding:40px 32px;border-top:1px solid var(--border);background:var(--bg)}
+.foot-i{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-logo{font-family:var(--fd);font-size:22px;letter-spacing:.05em}
+.foot-links{display:flex;gap:24px;flex-wrap:wrap}
+.foot-links a{font-family:var(--fm);font-size:11px;letter-spacing:1.4px;color:rgba(255,255,255,.4);transition:color .2s ease}
+.foot-links a:hover{color:var(--lime)}
+.foot-legal{width:100%;margin-top:24px;padding-top:24px;border-top:1px solid var(--border);font-family:var(--fm);font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.2);line-height:1.8;text-align:center}
+
+/* ═══ RESPONSIVE ═════════════════════════════════════════ */
+@media(max-width:1100px){.author-content{padding:60px 48px}}
+@media(max-width:900px){
+  .fw-grid{grid-template-columns:1fr}
+  .fw-box-1,.fw-box-2w,.fw-box-3,.fw-box-45{grid-column:auto}
+  .bonus-grid{grid-template-columns:1fr}
+  .bc-oracle{grid-column:auto;grid-template-columns:1fr}
+  .bc-oracle .bc-img-wrap{height:220px}
+  .bc-toolkit,.bc-divid{grid-column:auto}
+  .author-sec{grid-template-columns:1fr}
+  .author-photo{min-height:460px}
+  .author-content{padding:44px 32px}
+  .benefits-grid{grid-template-columns:1fr 1fr}
+  .t-row{grid-template-columns:1fr;gap:0}}
+@media(max-width:768px){
+  .nav-links,.nav-btn{display:none}
+  .nav-ham{display:flex}
+  .hero-scene{height:clamp(300px,65vw,480px)}
+  .hero-video{object-position:center 5%}
+  .hero-the{left:4%}
+  .hero-cash{right:4%}
+  .hero-the,.hero-cash{font-size:clamp(48px,15vw,110px);bottom:12%}
+  .hero-foot{padding:24px 18px 48px}
+  .price-card{padding:32px 24px}
+  .benefits-grid{grid-template-columns:1fr}
+  .foot-i{flex-direction:column;align-items:flex-start}
+  .proc-body{grid-template-columns:1fr;gap:16px 0;padding:40px 20px}
+  .proc-day{flex-direction:row;align-items:center;gap:0}
+  .proc-step{font-size:clamp(48px,12vw,72px)}}
+@media(max-width:480px){
+  .wrap{padding:0 20px}
+  .fw-box,.fw-box-2{padding:28px 20px}
+  .author-content{padding:32px 20px}
+  .author-stats{flex-direction:column;gap:10px}
+  .price-card{padding:24px 20px}
+  .final-cta{padding:80px 20px}}
 </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Сайт</h1>
-    <p>Репозиторій готовий. Вміст сайту буде додано сюди.</p>
+
+<nav class="nav">
+  <div class="nav-i">
+    <a href="#" class="nav-logo">THE CASH</a>
+    <div class="nav-links">
+      <a href="#fw"     class="nav-link on">МЕТОД</a>
+      <a href="#proc"   class="nav-link">ПРОГРАМА</a>
+      <a href="#author" class="nav-link">АВТОР</a>
+      <a href="#bonus"  class="nav-link">БОНУСИ</a>
+    </div>
+    <a href="https://secure.wayforpay.com/button/be5ab168040d9" class="nav-btn" target="_blank">ПРИЄДНАТИСЬ</a>
+    <div class="nav-ham" id="ham" role="button" aria-label="Відкрити меню"><span></span><span></span><span></span></div>
   </div>
+</nav>
+<div class="mob-menu" id="mob">
+  <a href="#fw">МЕТОД</a>
+  <a href="#proc">ПРОГРАМА</a>
+  <a href="#author">АВТОР</a>
+  <a href="#bonus">БОНУСИ</a>
+  <a href="https://secure.wayforpay.com/button/be5ab168040d9" target="_blank">ПРИЄДНАТИСЬ →</a>
+</div>
+
+<!-- ══ HERO ══════════════════════════════════════════════ -->
+<header class="hero" id="top">
+  <div class="hero-scene">
+    <video class="hero-video" autoplay muted playsinline></video>
+    <div class="hero-the">
+      <div class="glitch-noise"></div>
+      <span class="glitch-text">THE</span>
+    </div>
+    <div class="hero-cash">
+      <div class="glitch-noise"></div>
+      <span class="glitch-text">CASH</span>
+    </div>
+  </div>
+  <div class="hero-foot">
+    <p class="hero-tag"><em>МЕТОД,</em> ЯКИЙ ПЕРЕТВОРИТЬ ВАШ КОНТЕНТ НА
+      <span class="hero-accent"><em>ПРИБУТОК</em>
+        <svg class="hero-underline-svg" viewBox="0 0 316 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 15C45.5 8.5 131.5 3 313 3M17 11C78.5 7.5 186.5 6 287 8.5" stroke="#FF2D6B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </p>
+    <a class="cta-main" href="https://secure.wayforpay.com/button/be5ab168040d9" target="_blank">ЗАБРАТИ МЕТОД</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ══ 1. ДЛЯ КОГО ═══════════════════════════════════════ -->
+<section class="fw" id="fw">
+  <div class="wrap">
+    <div class="fw-pre"><span class="fw-slash">///</span></div>
+    <h2 class="sec-h1 sec-h1-lg fi">ДЛЯ КОГО ПІДІЙДЕ МІЙ МЕТОД?</h2>
+    <div class="fw-grid">
+      <div class="fw-box fw-box-1 fi">
+        <h3 class="fw-h3">Ти експерт:</h3>
+        <p class="fw-p">Маєш знання, але заробляєш недостатньо. Твій блог бачать лише знайомі, а нова аудиторія не приходить.</p>
+        <div class="fw-result">Результат: Маєш метод залучення нових клієнтів, які купують без довгих прогрівів.</div>
+      </div>
+      <div class="fw-box-2w fi delay-1">
+        <div class="fw-box-2">
+          <h3 class="fw-h3">Ти хочеш масштабуватися:</h3>
+          <p class="fw-p">Маєш стабільний дохід, але боїшся щось змінювати в блозі, щоб не втратити те, що вже є. Твій блог уперся в стелю, і ти не знаєш, як масштабуватися безпечно.</p>
+          <div class="fw-status">Масштабування без ризику для поточної бази — ми не ламаємо старе, ми добудовуємо систему прибутку.</div>
+        </div>
+      </div>
+      <div class="fw-box fw-box-3 fi">
+        <h3 class="fw-h3">Витрачаєш багато часу на контент:</h3>
+        <p class="fw-p">Витрачаєш години на контент, але він не приносить достатньо грошей. Твій контент «цікавий», але не продає.</p>
+        <div class="fw-result">Результат: Маєш чіткий метод створення контенту, що залучає та перетворює підписника на клієнта.</div>
+        <div class="fw-dots">
+          <div class="fw-dot fw-dot-1"></div>
+          <div class="fw-dot fw-dot-2"></div>
+          <div class="fw-dot fw-dot-3"></div>
+        </div>
+      </div>
+      <div class="fw-box-45 fi delay-1">
+        <div class="fw-box-4">
+          <h3 class="fw-h3">Ти не знаєш з чого почати:</h3>
+          <p class="fw-p">Хочеш заробляти з блогу, але тонеш в інформаційному шумі. Не розумієш, з чого почати: упаковка, контент, аналіз чи продажі?</p>
+        </div>
+        <div class="fw-box-5">
+          <h3 class="fw-h3">Ти потребуєш працюючої системи:</h3>
+          <p class="fw-p">ПЕРЕТВОРИ БЛОГ НА БІЗНЕС-СИСТЕМУ З РЕГУЛЯРНИМИ ОПЛАТАМИ.</p>
+        </div>
+      </div>
+    </div>
+    <div class="fw-cta-wrap fi">
+      <a class="cta-main" href="https://secure.wayforpay.com/button/be5ab168040d9" target="_blank">ЗАБРАТИ МЕТОД</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 2. PROCESS STUDIO ══════════════════════════════════ -->
+<div class="el-hdr fi" id="proc">
+  <h2>ПРОГРАМА ІНТЕНСИВУ</h2>
+</div>
+<section class="proc-sec">
+  <div class="proc-item fi">
+    <div class="proc-body">
+      <div class="proc-day"><span class="proc-step">01</span></div>
+      <div class="proc-content">
+        <h3 class="proc-title">АУДИТОРІЯ<br>І ПОЗИЦІЯ</h3>
+        <p class="proc-text">День 1 — Позиціонування та аудиторія. Малюємо маршрут: ти зрозумієш, як виділитися серед тисяч конкурентів і стать єдиним логічним вибором для своєї аудиторії.</p>
+        <span class="proc-bonus">Бонуси: Таблиця конкурентів + Таблиця аналізу аудиторії + Питання для кастдевів + «Полювання за сенсами»</span>
+      </div>
+    </div>
+  </div>
+  <div class="proc-item fi">
+    <div class="proc-body">
+      <div class="proc-day"><span class="proc-step">02</span></div>
+      <div class="proc-content">
+        <h3 class="proc-title">УПАКОВКА<br>ПРОФІЛЮ</h3>
+        <p class="proc-text">День 2 — Упаковка. Ставимо колеса: створиш профіль, який миттєво викликає довіру та автоматично конвертує випадкового відвідувача у лояльного підписника.</p>
+        <span class="proc-bonus">Бонуси: Чек-лист «Аудит упаковки» + «Метод цифрового аватару» + Формула «Золотий перетин» + Мікроконверсійні воронки</span>
+      </div>
+    </div>
+  </div>
+  <div class="proc-item fi">
+    <div class="proc-body">
+      <div class="proc-day"><span class="proc-step">03</span></div>
+      <div class="proc-content">
+        <h3 class="proc-title">СИСТЕМА<br>КОНТЕНТУ</h3>
+        <p class="proc-text">День 3 — Система контенту. Заливаємо паливо: ти нарешті забудеш про «що постити» і впровадиш систему контенту, яка веде клієнта від першого перегляду до бажання купити.</p>
+        <span class="proc-bonus">Бонуси: 100 гачків для першої сторіз + Контент-план за сходами усвідомленості</span>
+      </div>
+    </div>
+  </div>
+  <div class="proc-item fi">
+    <div class="proc-body">
+      <div class="proc-day"><span class="proc-step">04</span></div>
+      <div class="proc-content">
+        <h3 class="proc-title">ДВИГУН<br>ВОРОНОК</h3>
+        <p class="proc-text">День 4 — Воронки. Заводимо двигун: побудуєш архітектуру воронок, які працюють 24/7, приносячи заявки та гроші, поки ти займаєшся творчістю чи відпочиваєш.</p>
+        <span class="proc-bonus">Бонус: Ти побачиш, що «під капотом» моїх воронок — кожен крок клієнта від першого дотику до оплати.</span>
+      </div>
+    </div>
+  </div>
+  <div class="proc-item fi">
+    <div class="proc-body">
+      <div class="proc-day"><span class="proc-step">05</span></div>
+      <div class="proc-content">
+        <h3 class="proc-title">МИСТЕЦТВО<br>ПРОДАЖІВ</h3>
+        <p class="proc-text">День 5 — Продажі. Фінішна пряма: дізнаєшся мистецтво закриття угод — як спілкуватися з клієнтом так, щоб він сам казав «Куди платити гроші?».</p>
+        <span class="proc-bonus">Головний бонус: AI-АСИСТЕНТ — твій персональний креативний відділ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 3. РЕЗУЛЬТАТ ═══════════════════════════════════════ -->
+<section class="transform-sec" id="transform">
+  <div class="wrap">
+    <div class="sec-tag fi">// Трансформація</div>
+    <h2 class="sec-h1 sec-h1-sm fi">ТВІЙ РЕЗУЛЬТАТ</h2>
+    <div class="t-grid fi">
+      <div class="t-row">
+        <div class="t-col">
+          <div class="t-lbl"><span class="t-dot off"></span>БУЛО ДО ІНТЕНСИВУ</div>
+          <div class="t-item">Робиш контент «в нікуди», охоплення падають, а грошей не додається.</div>
+        </div>
+        <div class="t-col after">
+          <div class="t-lbl"><span class="t-dot on"></span>СТАЛО ПІСЛЯ ІНТЕНСИВУ</div>
+          <div class="t-item">Кожен пост, рілс чи сторіз — це продуманий крок, який веде людину до покупки.</div>
+        </div>
+      </div>
+      <div class="t-row">
+        <div class="t-col">
+          <div class="t-lbl"><span class="t-dot off"></span>БУЛО ДО ІНТЕНСИВУ</div>
+          <div class="t-item">Боїшся здаватися нав'язливим, тому просто робиш корисний контент і не знаєш що і як продавати.</div>
+        </div>
+        <div class="t-col after">
+          <div class="t-lbl"><span class="t-dot on"></span>СТАЛО ПІСЛЯ ІНТЕНСИВУ</div>
+          <div class="t-item">Продаєш впевнено, бо знаєш: твій продукт реально вирішує біль клієнта.</div>
+        </div>
+      </div>
+      <div class="t-row">
+        <div class="t-col">
+          <div class="t-lbl"><span class="t-dot off"></span>БУЛО ДО ІНТЕНСИВУ</div>
+          <div class="t-item">Постійний хаос у голові: то Reels знімати, то шапку міняти, то кастдеви робити.</div>
+        </div>
+        <div class="t-col after">
+          <div class="t-lbl"><span class="t-dot on"></span>СТАЛО ПІСЛЯ ІНТЕНСИВУ</div>
+          <div class="t-item">Маєш чітку карту: що, навіщо і в якій послідовності робити, щоб отримати CASH.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4. АВТОР ═══════════════════════════════════════════ -->
+<section class="author-sec" id="author">
+  <div class="author-photo">
+    <img src="https://www.figma.com/api/mcp/asset/6cef4f79-046f-4858-9a64-febe39dbdce8" onerror="this.style.display='none'" alt="Сергій Дєлєєв" id="authorImg">
+    <div class="author-overlay">
+      <div class="author-name" id="aName">SERGEY DELYAEV</div>
+      <div class="author-role" id="aRole">CHIEF ARCHITECT // FOUNDER</div>
+    </div>
+  </div>
+  <div class="author-content fi">
+    <div class="author-sec-tag">// FOUNDER_DOSSIER</div>
+    <h2 class="author-h2">ХТО Я І ЧОМУ<br>МІЙ МЕТОД<br>ПРАЦЮЄ?</h2>
+    <p class="author-p">Привіт, я Сергій Дєлєєв — людина, яка знає ціну кожному долару та кожній хвилині. Я не «інфопродюсер» чи «вчитель». Я — практик, який пройшов шлях від повного краху до реалізації всіх цілей.</p>
+    <p class="author-p">У 2014 році я втратив усе. В кишені залишилося лише $200. Але вже у 2017-му я повернувся у бізнес. Я знаю, як це — починати з нуля, і я знаю, який метод потрібен, щоб більше не падати.</p>
+    <p class="author-p">Як CEO я будував компанію від малого стартапу до обороту $18,000,000+ на рік. З 2024 присвятив себе онлайн-маркетингу та побудові бізнес-систем для експертів. Я зробив цей метод максимально доступним, бо все ще вірю в людей.</p>
+    <div class="author-stats">
+      <div class="astat">
+        <div class="astat-lbl" id="s1l">IMPACT FACTOR</div>
+        <div class="astat-val" id="s1v">120K+</div>
+      </div>
+      <div class="astat">
+        <div class="astat-lbl" id="s2l">SYSTEMS BUILT</div>
+        <div class="astat-val" id="s2v">50+</div>
+      </div>
+      <div class="astat">
+        <div class="astat-lbl" id="s3l">YEARS IN BUSINESS</div>
+        <div class="astat-val" id="s3v">12+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 5. ELITE ASSETS ════════════════════════════════════ -->
+<div class="el-hdr fi" id="bonus">
+  <h2>БОНУСИ</h2>
+</div>
+<section class="bonus-grid">
+  <article class="bc bc-oracle">
+    <div class="bc-img-wrap">
+      <img class="bc-img" onerror="this.style.display='none'" src="https://www.figma.com/api/mcp/asset/3d8ab1a2-dc5f-4b35-894d-f02a7551795a" alt="">
+      <img class="bc-grad" onerror="this.style.display='none'" src="https://www.figma.com/api/mcp/asset/0e6166f4-abf4-4a69-b6c5-328c548bf51f" alt="">
+    </div>
+    <div class="bc-body fi">
+      <h3 class="bc-h2">THE ORACLE AI</h3>
+      <p class="bc-p">Твій персональний AI-асистент — повноцінний креативний відділ, що пише вірусні сценарії та генерує ідеї з нелюдською точністю.</p>
+      <ul class="bc-list">
+        <li>Пише вірусні сценарії для Reels за 30 секунд</li>
+        <li>Генерує ідеї, які залітають у рекомендації в Інстаграм та Тредс</li>
+        <li>Робить транскрибацію твоїх думок у готові пости</li>
+        <li>Створює сторітелінги, які додивляються до кінця</li>
+        <li>Постійне оновлення функцій</li>
+      </ul>
+      <a class="bc-cta" href="https://secure.wayforpay.com/button/be5ab168040d9" target="_blank"><span>ПРИЄДНАТИСЬ ДО THE CASH</span> <span>→</span></a>
+    </div>
+  </article>
+  <article class="bc bc-toolkit fi">
+    <div class="bc-img-wrap">
+      <img class="bc-img" onerror="this.style.display='none'" src="https://www.figma.com/api/mcp/asset/916315d4-dcf6-431a-8339-2346dc0a5d8b" alt="">
+      <img class="bc-grad" onerror="this.style.display='none'" src="https://www.figma.com/api/mcp/asset/d8a6546b-b398-413f-ba96-af37eb5ffba7" alt="">
+    </div>
+    <div class="bc-body">
+      <h3 class="bc-h2">ІНСТРУМЕНТИ АРХІТЕКТОРА</h3>
+      <p class="bc-p">Щоденні бонуси — таблички, чек-листи та інструменти, які прибирають тертя і дають тобі структуру з першого дня.</p>
+      <ul class="bc-list">
+        <li>Таблиця конкурентів</li>
+        <li>Таблиця аналізу цільової аудиторії</li>
+        <li>Питання для кастдевів</li>
+        <li>Чек-лист «Аудит упаковки»</li>
+        <li>100 гачків для першої сторіз</li>
+      </ul>
+      <a class="bc-cta" href="https://secure.wayforpay.com/button/be5ab168040d9" target="_blank"><span>ПРИЄДНАТИСЬ ДО THE CASH</span> <span>→</span></a>
+    </div>
+  </article>
+  <article class="bc bc-divid fi delay-1">
+    <div class="bc-img-wrap">
+      <img class="bc-img" onerror="this.style.display='none'" src="https://www.figma.com/api/mcp/asset/0259b991-b90b-410b-a1d4-39705a8bfe92" alt="">
+      <img class="bc-grad" onerror="this.style.display='none'" src="https://www.figma.com/api/mcp/asset/59c8750b-dda4-4fd5-b85b-14654b01e432" alt="">
+    </div>
+    <div class="bc-body">
+      <h3 class="bc-h2">НАКОПИЧУВАЛЬНІ ДИВІДЕНДИ</h3>
+      <p class="bc-p">Практичні інструменти для налаштування власної бізнес-системи, що накопичуються і дають результат з кожним кроком.</p>
+      <ul class="bc-list">
+        <li>Полювання за сенсами</li>
+        <li>Метод цифрового аватару</li>
+        <li>Формула «Золотий перетин»</li>
+        <li>Мікроконверсійні воронки</li>
+        <li>Контент-план за сходами усвідомленості</li>
+      </ul>
+      <a class="bc-cta" href="https://secure.wayforpay.com/button/be5ab168040d9" target="_blank"><span>ПРИЄДНАТИСЬ ДО THE CASH</span> <span>→</span></a>
+    </div>
+  </article>
+</section>
+
+<!-- ══ 6. ВИГОДИ ══════════════════════════════════════════ -->
+<section class="benefits-sec" id="benefits">
+  <div class="wrap">
+    <div class="sec-tag fi">// Результати</div>
+    <h2 class="sec-h1 sec-h1-sm fi">ОСЬ ЧОМУ ТИ<br>ПОЧНЕШ ЗАРОБЛЯТИ</h2>
+    <div class="benefits-grid">
+      <div class="bcard fi">
+        <h3 class="bcard-title">МАГНІТ ДЛЯ КЛІЄНТІВ</h3>
+        <p class="bcard-text">Навчишся притягувати «своїх» людей, які готові платити, а не просто ставити лайки.</p>
+      </div>
+      <div class="bcard fi delay-1">
+        <h3 class="bcard-title">УПАКОВКА «НА МІЛЬЙОН»</h3>
+        <p class="bcard-text">Зробиш такий профіль, де за 3 секунди зрозуміло, чому ти крутий і куди платити гроші.</p>
+      </div>
+      <div class="bcard fi delay-2">
+        <h3 class="bcard-title">REELS, ЩО ПРОДАЮТЬ</h3>
+        <p class="bcard-text">Навчишся робити контент, який не просто збирає перегляди, а приводить цільових підписників та клієнтів.</p>
+      </div>
+      <div class="bcard fi">
+        <h3 class="bcard-title">АВТОПІЛОТ У ПРОДАЖАХ</h3>
+        <p class="bcard-text">Налаштуєш прості воронки, які працюють, поки ти відпочиваєш.</p>
+      </div>
+      <div class="bcard fi delay-1">
+        <h3 class="bcard-title">ВПЕВНЕНІСТЬ ПІДПРИЄМЦЯ</h3>
+        <p class="bcard-text">Перестанеш боятися слова «продаю» і почнеш допомагати людям за достойний чек.</p>
+      </div>
+      <div class="bcard fi delay-2">
+        <h3 class="bcard-title">КОНТЕНТ БЕЗ МУК</h3>
+        <p class="bcard-text">Вмітимеш складати план на місяць за годину і назавжди забудеш про «що сьогодні постити?»</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 7. ЦІНА ════════════════════════════════════════════ -->
+<section class="price-sec" id="price">
+  <div class="wrap">
+    <div class="sec-tag fi">// ВАЖЛИВО</div>
+    <h2 class="sec-h1 sec-h1-sm fi">ДОСТУПНІСТЬ,<br>ЩО ВРАЖАЄ!</h2>
+    <div class="price-card fi">
+      <div class="price-tag">// INVESTMENT_REQUIRED</div>
+      <div class="price-num-row">
+        <span class="price-amount" id="priceAmt">970</span>
+        <span class="price-cur" id="priceCur">грн</span>
+      </div>
+      <div class="price-note">ОДНОРАЗОВО // ВСІ МАТЕРІАЛИ ТА ОНОВЛЕННЯ НАЗАВЖДИ</div>
+      <p class="price-desc">Ціна одного сніданку в кафе або двох квитків у кіно з попкорном. Але сніданок закінчиться за 30 хв, а знання з мого методу The CASH залишаться з тобою назавжди і будуть приносити гроші кожного дня. Ти інвестуєш вартість одного сніданку в бізнес-систему, яка окупиться вже з першого продажу.</p>
+      <ul class="price-includes">
+        <li>5 відео-уроків з конспектами та практичними завданнями</li>
+        <li>AI-асистент — твій персональний креативний відділ</li>
+        <li>5 щоденних бонусних інструментів (таблиці, чек-листи, гачки)</li>
+        <li>5 практичних інструментів для налаштування бізнес-системи</li>
+        <li>Доступ до закритого каналу з оновленнями назавжди</li>
+        <li>Особистий зв'язок з Сергієм у Instagram — в будь-який час</li>
+        <li>Гарантія повернення коштів — без умов і термінів</li>
+      </ul>
+      <a class="cta-main" href="https://secure.wayforpay.com/button/be5ab168040d9" id="priceCta" style="display:block;text-align:center" target="_blank">ПРИЄДНАТИСЬ ДО THE CASH</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 8. FAQ ══════════════════════════════════════════════ -->
+<section class="faq-sec" id="faq">
+  <div class="wrap">
+    <div class="sec-tag fi">// FAQ</div>
+    <h2 class="sec-h1 sec-h1-sm fi">ТВОЇ ЗАПИТАННЯ<br>МОЇ ВІДПОВІДІ</h2>
+    <div class="faq-list">
+      <div class="faq-item fi">
+        <div class="faq-q">Чи підійде мені метод, якщо я новачок?<span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Так, я пояснюю простою мовою та розкладаю по поличках весь свій метод етап за етапом. Надаю додаткові практичні інструменти, щоб ще в процесі проходження інтенсиву твій блог починав перетворюватися на бізнес-систему та приносив гроші.</div>
+      </div>
+      <div class="faq-item fi">
+        <div class="faq-q">Чи підійде мені, якщо я вже маю досвід монетизації блогу?<span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Так, бо на інтенсиві не лише фундаментальні знання та мій досвід, але й дрібниці, які часто залишаються непомітними і крадуть відсоток від доходу. Ти запровадиш все це у себе і побачиш, як збільшиться твій дохід.</div>
+      </div>
+      <div class="faq-item fi">
+        <div class="faq-q">Що робити, якщо мені не підійшло?<span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Якщо ти запровадиш мій метод і не відчуєш покращення, то я поверну тобі оплату в будь-який час! Без зайвих питань і умов.</div>
+      </div>
+      <div class="faq-item fi">
+        <div class="faq-q">Куди мені звертатися, якщо є питання?<span class="faq-toggle">+</span></div>
+        <div class="faq-answer">Ти можеш звертатися в будь-який час до мене в Instagram, навіть якщо не купив The CASH. Всі, хто зі мною хоч колись комунікував, знають — я ЗАВЖДИ відповідаю на всі питання.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 9. FINAL CTA ═══════════════════════════════════════ -->
+<section class="final-cta">
+  <h2 class="fi">ЧОГО ТИ<br>ЩЕ ЧЕКАЄШ?</h2>
+  <a class="final-btn" href="https://secure.wayforpay.com/button/be5ab168040d9" target="_blank"><span>ОТРИМАТИ МЕТОД ЗАРАЗ</span> <span>→</span></a>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="foot-i">
+    <span class="foot-logo">THE CASH</span>
+    <div class="foot-links">
+      <a href="https://www.instagram.com/content_papa/" target="_blank" rel="noopener">Інстаграм</a>
+      <a href="https://drive.google.com/file/d/13hOYbrpn0vnMXlEFf5tPTpw0y_Z-2hN2/view" target="_blank" rel="noopener">Договір оферти</a>
+      <a href="https://drive.google.com/file/d/1Xk_Bzx3jh5mdAIiMxPlFSBHoSC4QnnTX/view" target="_blank" rel="noopener">Політика конфіденційності</a>
+    </div>
+    <div class="foot-legal" id="ftLegal">
+      ФОП Дєлєєва Катерина Олександрівна, РНОКПП 3464401947<br>Інтенсив The CASH
+    </div>
+  </div>
+</footer>
+
+<script>
+const CONFIG = {
+  price:{ amount:'970', currency:'грн' },
+  author:{
+    name:'SERGEY DELYAEV', role:'CHIEF ARCHITECT // FOUNDER',
+    heroVideo:'https://res.cloudinary.com/der4ajjzb/video/upload/v1781561766/Male_figure_in_neon_light_202606151736_f2xvqn.mp4',
+    photo:'https://www.figma.com/api/mcp/asset/6cef4f79-046f-4858-9a64-febe39dbdce8',
+  },
+  stats:[
+    {id:'s1',lbl:'IMPACT FACTOR',val:'120K+'},
+    {id:'s2',lbl:'SYSTEMS BUILT',val:'50+'},
+    {id:'s3',lbl:'YEARS IN BUSINESS',val:'12+'},
+  ],
+};
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const pa=document.getElementById('priceAmt'),pc=document.getElementById('priceCur');
+  if(pa)pa.textContent=CONFIG.price.amount;
+  if(pc)pc.textContent=CONFIG.price.currency;
+
+  const ai=document.getElementById('authorImg');
+  if(ai&&CONFIG.author.photo)ai.src=CONFIG.author.photo;
+  const an=document.getElementById('aName'),ar=document.getElementById('aRole');
+  if(an)an.textContent=CONFIG.author.name;
+  if(ar)ar.textContent=CONFIG.author.role;
+
+  const hv=document.querySelector('.hero-video');
+  if(hv&&CONFIG.author.heroVideo){
+    hv.crossOrigin='anonymous';
+    hv.src=CONFIG.author.heroVideo;
+    hv.load();
+    hv.play().catch(()=>{});
+  }
+
+  CONFIG.stats.forEach(s=>{
+    const v=document.getElementById(s.id+'v'),l=document.getElementById(s.id+'l');
+    if(v)v.textContent=s.val;if(l)l.textContent=s.lbl;
+  });
+});
+
+/* fade-in on scroll */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v')});
+},{threshold:.05});
+document.querySelectorAll('.fi').forEach(el=>io.observe(el));
+
+/* nav background on scroll */
+window.addEventListener('scroll',()=>{
+  const n=document.querySelector('.nav');
+  if(n)n.style.background=window.scrollY>40?'rgba(13,14,15,.97)':'rgba(13,14,15,.92)';
+},{passive:true});
+
+/* mobile menu */
+const ham=document.getElementById('ham'),mob=document.getElementById('mob');
+if(ham&&mob){
+  ham.addEventListener('click',()=>{ham.classList.toggle('on');mob.classList.toggle('on')});
+  mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+    ham.classList.remove('on');mob.classList.remove('on');
+  }));
+}
+
+/* FAQ accordion */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.closest('.faq-item'),was=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>{
+      i.classList.remove('open');
+      const t=i.querySelector('.faq-toggle');if(t)t.textContent='+';
+    });
+    if(!was){
+      item.classList.add('open');
+      const t=item.querySelector('.faq-toggle');if(t)t.textContent='×';
+    }
+  });
+});
+
+/* hero title reveal + video freeze via near-zero playbackRate */
+const heroGlitchEls=document.querySelectorAll('.hero-the,.hero-cash');
+let heroTitleRevealed=false;
+function revealHeroTitle(){
+  if(heroTitleRevealed)return;
+  heroTitleRevealed=true;
+  heroGlitchEls.forEach(el=>el.classList.add('glitch-active'));
+}
+
+const heroVideoEl=document.querySelector('.hero-video');
+if(heroVideoEl){
+  heroVideoEl.addEventListener('timeupdate',()=>{
+    const d=heroVideoEl.duration;
+    if(!d||isNaN(d))return;
+    if(heroVideoEl.currentTime>=d-1)revealHeroTitle();
+  });
+  heroVideoEl.addEventListener('ended',()=>{
+    revealHeroTitle();
+    /* seek back 1 frame, play at 0.001x — browser keeps video active, frame stays frozen */
+    heroVideoEl.currentTime=heroVideoEl.duration-0.1;
+    heroVideoEl.playbackRate=0.001;
+    heroVideoEl.play();
+  });
+  heroVideoEl.addEventListener('error',revealHeroTitle);
+  setTimeout(revealHeroTitle,8000);
+}else{
+  revealHeroTitle();
+}
+
+/* glitch re-trigger (only after the initial reveal) */
+setInterval(()=>{
+  if(heroTitleRevealed&&Math.random()>.85){
+    heroGlitchEls.forEach(el=>{
+      el.classList.remove('glitch-active');
+      setTimeout(()=>el.classList.add('glitch-active'),50);
+    });
+  }
+},1000);
+</script>
 </body>
 </html>

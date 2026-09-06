@@ -1,12 +1,14 @@
-# Сайт
+# THE CASH — метод від Content Papa
 
-Статичний сайт на GitHub Pages.
+Статичний лендінг на GitHub Pages.
 
 **Адреса:** https://vetalfilimonow.github.io/sait/
 
+Джерело: HTML-віджет сайту vetalfilimonow.wixstudio.com/my-sitecash — вміст перенесено без змін.
+
 ## Структура
-- `index.html` — головна сторінка
-- `.nojekyll` — вимикає Jekyll, щоб HTML віддавався без змін
+- `index.html` — уся сторінка: розмітка, стилі та скрипти в одному файлі
+- `.nojekyll` — вимикає Jekyll, щоб HTML віддавався як є
 
 ## Локальний запуск
 ```bash
