@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bar" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#B9F600" stop-opacity=".05"/><stop offset="1" stop-color="#B9F600" stop-opacity=".55"/></linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FF2D6B"/><stop offset="1" stop-color="#B9F600"/></linearGradient>
+    <linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9F600" stop-opacity=".18"/><stop offset="1" stop-color="#B9F600" stop-opacity="0"/></linearGradient>
+    <radialGradient id="glow" cx="85%" cy="15%" r="50%"><stop offset="0" stop-color="#B9F600" stop-opacity=".2"/><stop offset="1" stop-color="#B9F600" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="#0D0E0F"/>
+  <rect width="1200" height="800" fill="url(#glow)"/>
+  <g stroke="#fff" stroke-opacity=".05"><path d="M0 200H1200M0 350H1200M0 500H1200M0 650H1200"/></g>
+  <g fill="url(#bar)">
+    <rect x="110" y="640" width="60" height="160"/><rect x="210" y="625" width="60" height="175"/>
+    <rect x="310" y="605" width="60" height="195"/><rect x="410" y="578" width="60" height="222"/>
+    <rect x="510" y="543" width="60" height="257"/><rect x="610" y="497" width="60" height="303"/>
+    <rect x="710" y="438" width="60" height="362"/><rect x="810" y="362" width="60" height="438"/>
+    <rect x="910" y="265" width="60" height="535"/><rect x="1010" y="140" width="60" height="660"/>
+  </g>
+  <path d="M140 640L240 625L340 605L440 578L540 543L640 497L740 438L840 362L940 265L1040 140V800H140Z" fill="url(#area)"/>
+  <path d="M140 640L240 625L340 605L440 578L540 543L640 497L740 438L840 362L940 265L1040 140" fill="none" stroke="url(#line)" stroke-width="4" stroke-linejoin="round"/>
+  <g fill="#0D0E0F" stroke="#B9F600" stroke-width="3">
+    <circle cx="440" cy="578" r="7"/><circle cx="740" cy="438" r="7"/><circle cx="1040" cy="140" r="11"/>
+  </g>
+  <circle cx="1040" cy="140" r="30" fill="none" stroke="#B9F600" stroke-opacity=".35"/>
+  <g font-family="monospace" font-size="16" letter-spacing="3" fill="#B9F600" fill-opacity=".5">
+    <text x="110" y="120">COMPOUND_RETURN</text>
+    <text x="1000" y="100" text-anchor="end" fill="#B9F600" fill-opacity=".85" font-size="22">+ x10</text>
+  </g>
+</svg>

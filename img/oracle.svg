@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#B9F600" stop-opacity=".9"/>
+      <stop offset=".35" stop-color="#B9F600" stop-opacity=".25"/>
+      <stop offset="1" stop-color="#B9F600" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mg" cx="80%" cy="85%" r="60%">
+      <stop offset="0" stop-color="#FF2D6B" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#FF2D6B" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#fff" stroke-opacity=".04"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="#0D0E0F"/>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+  <rect width="1200" height="800" fill="url(#mg)"/>
+  <g fill="none" stroke="#B9F600" stroke-opacity=".28" stroke-width="1.5">
+    <path d="M600 400L320 180M600 400L880 160M600 400L1000 420M600 400L860 650M600 400L330 640M600 400L200 410"/>
+    <path d="M320 180L200 410L330 640L860 650L1000 420L880 160Z" stroke-opacity=".14"/>
+    <path d="M320 180L120 120M880 160L1080 90M1000 420L1180 360M860 650L1020 780M330 640L140 760M200 410L30 470" stroke-opacity=".12"/>
+  </g>
+  <g fill="#B9F600">
+    <circle cx="320" cy="180" r="6"/><circle cx="880" cy="160" r="6"/><circle cx="1000" cy="420" r="6"/>
+    <circle cx="860" cy="650" r="6"/><circle cx="330" cy="640" r="6"/><circle cx="200" cy="410" r="6"/>
+    <g fill-opacity=".4"><circle cx="120" cy="120" r="4"/><circle cx="1080" cy="90" r="4"/><circle cx="1180" cy="360" r="4"/>
+    <circle cx="1020" cy="780" r="4"/><circle cx="140" cy="760" r="4"/><circle cx="30" cy="470" r="4"/></g>
+  </g>
+  <circle cx="600" cy="400" r="260" fill="url(#core)" opacity=".55"/>
+  <g fill="none" stroke="#B9F600">
+    <circle cx="600" cy="400" r="210" stroke-opacity=".18" stroke-dasharray="2 10"/>
+    <circle cx="600" cy="400" r="160" stroke-opacity=".3"/>
+    <circle cx="600" cy="400" r="120" stroke-opacity=".5" stroke-dasharray="60 14"/>
+  </g>
+  <path d="M440 400Q600 270 760 400Q600 530 440 400Z" fill="#0D0E0F" stroke="#B9F600" stroke-width="3"/>
+  <circle cx="600" cy="400" r="48" fill="none" stroke="#B9F600" stroke-width="3"/>
+  <circle cx="600" cy="400" r="20" fill="#B9F600"/>
+  <circle cx="612" cy="390" r="6" fill="#0D0E0F"/>
+  <g font-family="monospace" font-size="16" fill="#B9F600" fill-opacity=".45" letter-spacing="3">
+    <text x="60" y="60">ORACLE.AI // ONLINE</text>
+    <text x="1140" y="760" text-anchor="end">GEN_IDEAS ▸ 100%</text>
+  </g>
+</svg>
